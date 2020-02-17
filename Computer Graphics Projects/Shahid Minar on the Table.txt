@@ -1,0 +1,450 @@
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+#include <stdlib.h>
+#include<GL/glut.h>
+#include<GL/glut.h>
+#include<bits/stdc++.h>
+
+void minarLeg(double thick, double len)
+{
+    glPushMatrix();
+    glTranslated(0, len/2, 0);
+    glScaled(thick, len, thick);
+    glColor3f(255,255,255); //green
+    glBegin(GL_QUADS); //top face
+    glutSolidCube(1.0);
+    glEnd();
+    glPopMatrix();
+}
+
+void wall(double thickness)    // function to create the walls with given thickness
+{
+    glPushMatrix();
+    glTranslated(1.0,0.5*thickness, 1.0);
+    glScaled(2.0, thickness, 2.0);
+    glutSolidCube(1.0);
+    glPopMatrix();
+}
+
+/*void wall_2(double thickness)    // function to create the walls with given thickness
+{
+    glPushMatrix();
+    glTranslated(1.0,0.5*thickness, 1.0);
+    glScaled(2.0, thickness, 1.96);
+    //glColor3f(.1176,0.565,1.0);
+    glBegin(GL_QUADS);
+
+    glEnd();
+
+    glutSolidCube(1.0);
+    glPopMatrix();
+}*/
+
+void tableLeg(double thick, double len)
+{
+    glPushMatrix();
+    glTranslated(0, len/2, 0);
+    glScaled(thick, len, thick);
+    glColor3f(1.0,0.72,0.17);
+    glutSolidCube(1.0);
+    glPopMatrix();
+
+}
+
+void table(double topWid, double topThick, double legThick, double legLen)
+{
+    glPushMatrix();
+    glTranslated(0, legLen, 0);
+    glScaled(topWid, topThick, topWid);
+    glColor3f(1.0, 0.82, 0.77);
+    glutSolidCube(1.0);
+    glPopMatrix();
+
+    double dist = 0.98 * topWid / 2.0 - legThick / 2.0;
+
+    //Assemble table legs
+    glPushMatrix();
+    glTranslated(dist, 0, dist);
+    tableLeg(legThick, legLen);
+    glTranslated(0, 0, -2 * dist);
+    tableLeg(legThick, legLen);
+    glTranslated(-2 * dist, 0, 2 * dist);
+    tableLeg(legThick, legLen);
+    glTranslated(0, 0, -2 * dist);
+    tableLeg(legThick, legLen);
+    glPopMatrix();
+}
+
+
+void displaySolid()
+{
+    const double t = glutGet(GLUT_ELAPSED_TIME) / 2000.0;
+    const double a = t*90.0;
+
+    GLfloat mat_ambient[]= {0.7f,0.7f,0.7f,0.1f};
+    GLfloat mat_diffuse[]= {0.5f,0.5f,0.5f,1.0f};
+    GLfloat mat_specular[]= {1.0f,1.0f,1.0f,1.0f};
+    GLfloat mat_shininess[]= {50.0f};
+    glMaterialfv(GL_FRONT,GL_AMBIENT,mat_ambient);
+    glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular);
+    glMaterialfv(GL_FRONT,GL_SHININESS,mat_shininess);
+    GLfloat light_Intensity[]= {0.7f,0.7f,0.7f,1.0f};
+    GLfloat light_Position[]= {2.0f,6.0f,3.0f,0.0f};
+    glLightfv(GL_LIGHT0,GL_POSITION,light_Position);
+    glLightfv(GL_LIGHT0,GL_DIFFUSE,light_Intensity);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    double winlet=1.0;
+    glOrtho(-winlet*64/48,winlet*64/48.0,-winlet*64/48,winlet*64/48,0.6,100.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(2.3,1.38,2.0,0.0,0.25,0.0,0.0,1.0,0.0);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glPushMatrix();
+    //glTranslated(0.08,0.08,0.08);
+
+
+    glRotated(60,0.0,0.0,0.0);
+    glRotated(a,0.0,1.0,0.0);
+    //glRotated(a,1.0,0.0,0.0);
+    //glRotated(a,0.0,0.0,1.0);
+    //glutSolidSphere(0.08,20,20);
+
+
+
+
+
+
+    //-----------table----------------------------------
+    glPushMatrix();
+    glTranslated(0.9, 0.04, 0.85);
+    table(1.0, 0.08, 0.08, 0.5);
+
+    //_______________Shaheed Minar_____________________________________________________
+
+
+
+
+
+
+    //-------------left_1---------------
+    glPushMatrix();
+    glTranslated(-0.35,0.5,-0.26);  //--------left1_1-------------
+    minarLeg(0.01, 0.38);
+    glPopMatrix();
+
+    //---middle line--
+    glPushMatrix();
+    glTranslated(-0.326,0.5,-0.28);
+    minarLeg(0.003, 0.38);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-0.303,0.5,-0.30);
+    minarLeg(0.003, 0.38);
+    glPopMatrix();
+    //------------------
+
+    glPushMatrix();
+    glTranslated(-0.28,0.5,-0.32);  //------------left1_2------------
+    minarLeg(0.01, 0.38);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-0.28,0.88,-0.32);       //--------upper line----------
+    glRotated(90.0,1.0,0.0,1.2);
+    minarLeg(0.01, 0.09);
+    glPopMatrix();
+
+
+    //-------------left_2---------------
+    glPushMatrix();
+    glTranslated(-0.20,0.5,-0.35);  //----------------left2_1----------
+    minarLeg(0.01, 0.45);
+    glPopMatrix();
+
+    //-------middle line-------
+    glPushMatrix();
+    glTranslated(-0.177,0.5,-0.36);
+    minarLeg(0.003, 0.45);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-0.154,0.5,-0.37);
+    minarLeg(0.003, 0.45);
+    glPopMatrix();
+    //---------------------------
+
+
+
+    glPushMatrix();
+    glTranslated(-0.13,0.5,-0.38);  //---------left2_2-------------
+    minarLeg(0.01, 0.45);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-0.13,0.95,-0.38);
+    glRotated(90,1.0,0.0,2.2);
+    minarLeg(0.01, 0.078);
+    glPopMatrix();
+
+    //********************MIDDLE***************************
+    glPushMatrix();
+    glTranslated(-0.05,0.5,-0.4);    //--------middle 1-------------
+    minarLeg(0.01, 0.5);
+    glPopMatrix();
+
+    //------------middle line------
+    glPushMatrix();
+    glTranslated(-0.027,0.5,-0.4);
+    minarLeg(0.003, 0.5);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-0.004,0.5,-0.4);
+    minarLeg(0.003, 0.5);
+    glPopMatrix();
+    //------------------------------
+
+
+    glPushMatrix();
+    glTranslated(0.03,0.5,-0.4);     //---------middle 2------------------
+    minarLeg(0.01, 0.5);
+    glPopMatrix();
+
+    //------------middle line------
+    glPushMatrix();
+    glTranslated(0.053,0.5,-0.4);
+    minarLeg(0.003, 0.5);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(0.076,0.5,-0.4);
+    minarLeg(0.003, 0.5);
+    glPopMatrix();
+    //------------------------------
+
+
+    glPushMatrix();
+    glTranslated(0.11,0.5,-0.4);    //-----------middle 3-------------
+    minarLeg(0.01, 0.5);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-0.05,1.0,-0.4);       //--------middle upper line----------
+    glRotated(-90.0,1.0,0.0,90.0);
+    minarLeg(0.003, 0.16);
+    glPopMatrix();
+
+    //--------------circle-----------------------
+    glPushMatrix();
+    glTranslated(0.03, 0.82, -0.42);
+    glScaled(1, 1, 0.02);
+    glBegin(GL_QUADS);
+    glColor3f(1,0,0);
+    glEnd();
+    glutSolidSphere(0.15,20,20);
+
+    glPopMatrix();
+
+
+
+    //-------------------middle_upper----------------
+    glPushMatrix();
+    glTranslated(-0.05,1.0,-0.4);    //---------1st line------------
+    glRotated(50.0,1.0,0.0,0.0);
+    minarLeg(0.01, 0.2);
+    glPopMatrix();
+
+    //------------middle line------
+    glPushMatrix();
+    glTranslated(-0.027,1.0,-0.4);
+    glRotated(50.0,1.0,0.0,0.0);
+    minarLeg(0.003, 0.2);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-0.004,1.0,-0.4);
+    glRotated(50.0,1.0,0.0,0.0);
+    minarLeg(0.003, 0.2);
+    glPopMatrix();
+    //------------------------------
+
+
+    glPushMatrix();
+    glTranslated(0.03,1.0,-0.4);     //---------2nd line------------
+    glRotated(50.0,1.0,0.0,0.0);
+    minarLeg(0.01, 0.2);
+    glPopMatrix();
+
+    //------------middle line------
+    glPushMatrix();
+    glTranslated(0.053,1.0,-0.4);
+    glRotated(50.0,1.0,0.0,0.0);
+    minarLeg(0.003, 0.2);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(0.076,1.0,-0.4);
+    glRotated(50.0,1.0,0.0,0.0);
+    minarLeg(0.003, 0.2);
+    glPopMatrix();
+    //------------------------------
+
+
+    glPushMatrix();
+    glTranslated(0.11,1.0,-0.4);      //---------3rd line------------
+    glRotated(50.0,1.0,0.0,0.0);
+    minarLeg(0.01, 0.2);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(-0.05,1.129,-0.25);       //--------upper line----------
+    glRotated(-90.0,1.0,0.0,90.0);
+    minarLeg(0.01, 0.16);
+    glPopMatrix();
+
+
+
+
+    //-------------right_1---------------
+    glPushMatrix();
+    glTranslated(0.19, 0.5, -0.38);
+    minarLeg(0.01, 0.45);
+    glPopMatrix();
+
+    //---middle line--
+    glPushMatrix();
+    glTranslated(0.213, 0.5, -0.37);
+    minarLeg(0.003, 0.45);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(0.236, 0.5, -0.36);
+    minarLeg(0.003, 0.45);
+    glPopMatrix();
+    //------------------
+
+    glPushMatrix();
+    glTranslated(0.26,0.5,-0.35);
+    minarLeg(0.01, 0.45);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(0.19,0.95,-0.38);  //-------------------
+    //glRotated(87.17,1.0,1.0,1.0);
+    glRotated(270.85,1.0,0.0,0.0);
+    glRotated(248.85,0.0,0.0,1.0);
+
+    // tableLeg(0.006, 0.06708);
+    minarLeg(0.01, 0.078);
+
+    glPopMatrix();
+
+
+
+    //-------------right_2---------------
+    glPushMatrix();
+    glColor3f(1.0,1.0,1.0);
+    glTranslated(0.34,0.5,-0.32);
+    minarLeg(0.01, 0.38);
+    glPopMatrix();
+
+    //---middle line--
+    glPushMatrix();
+    glTranslated(0.363,0.5,-0.30);
+    minarLeg(0.003, 0.38);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(0.386,0.5,-0.28);
+    minarLeg(0.003, 0.38);
+    glPopMatrix();
+    //------------------
+
+    glPushMatrix();
+    glTranslated(0.41,0.5,-0.26);
+    minarLeg(0.01, 0.38);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslated(0.34,0.88,-0.32);
+    glRotated(265.785,1.0,0.0,0.0);
+    glRotated(228.39,0.0,0.0,1.0);
+    minarLeg(0.01, 0.09);
+    glPopMatrix();
+
+    //_______________________________________________________
+    glPopMatrix();
+
+    //----------------------floor------------------------------
+
+    glPushMatrix();
+    glColor3d(1.0,0.88,1.0);
+    glTranslated(1.0,0.02, 0.96);
+    glScaled(2.0, 0.04, 2.0);
+    glutSolidCube(1.0);
+    glPopMatrix();
+
+    //------------Front wall-------------
+    glPushMatrix();
+    glColor3f(0.246,0.75,1.0);
+    glTranslated(0.0,0.04,0.0);
+    glRotated(-90.0,1.0,0.0,0.0);
+    wall(0.04);
+    glPopMatrix();
+
+    //------------Left side wall-----------
+    glPushMatrix();
+    glColor3f(0.0,1.0,0.0);
+    glTranslated(0.04,0.04,0.0);
+    glRotated(90.0,0.0,0.0,1.0);
+    wall(0.04);
+    glPopMatrix();
+
+    //------------Right side wall-----------
+    glPushMatrix();
+    glColor3f(0.0,1.0,0.0);
+    glTranslated(2.0, 0.04,0.00);
+    glRotated(90.0,0.0,0.0,1.0);
+    wall(0.04);
+    glPopMatrix();
+
+    glPopMatrix();
+
+
+    glFlush();
+}
+
+
+
+static void idle(void)
+{
+    glutPostRedisplay();
+}
+
+int main(int argc,char **argv)
+{
+    glutInit(&argc,argv);
+    glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB|GLUT_DEPTH);
+    glutInitWindowSize(1024,768);
+    glutInitWindowPosition(0,0);
+    glutCreateWindow("The National Shaheed Minar");
+    glutDisplayFunc(displaySolid);
+    glRotated(0,1,0,0);
+    glutIdleFunc(idle);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glShadeModel(GL_SMOOTH);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_NORMALIZE);
+    glEnable(GL_COLOR_MATERIAL);
+
+    // glClearColor(0.1,0.1,0.1,0.1);
+    // glViewport(0,0,1024,768);
+    glutMainLoop();
+}
